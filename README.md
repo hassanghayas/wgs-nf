@@ -4,10 +4,10 @@ Nextflow pipeline for bacterial genome analysis
 ## Introduction
 wgs-nf is a docker-based nextflow pipeline for bacterial genome assembly and annotation.
 Main steps for this pipeline are:
-1. Reads quality ['(fastqc)'](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
-2. Adapter and low quality bases Trimming ['(Trimmomatic)'](http://www.usadellab.org/cms/index.php?page=trimmomatic).
-3. Draft genome assembly using ['SPAdes'](https://ablab.github.io/spades/) de-novo genome assembler.
-4. Bacterial draft genome annotation with ['prokka'](https://github.com/tseemann/prokka).
+1. Reads quality [(fastqc)](https://www.bioinformatics.babraham.ac.uk/projects/fastqc/).
+2. Adapter and low quality bases Trimming [(Trimmomatic)](http://www.usadellab.org/cms/index.php?page=trimmomatic).
+3. Draft genome assembly using [SPAdes](https://ablab.github.io/spades/) de-novo genome assembler.
+4. Bacterial draft genome annotation with [prokka](https://github.com/tseemann/prokka).
 
 
 ## 💻 Installation
