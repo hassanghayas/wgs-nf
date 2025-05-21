@@ -27,8 +27,8 @@ nextflow run hassanghayas/wgs-nf -profile docker,test
 ```bash
 nextflow run hassanghayas/wgs-nf -profile docker --samplesheet <samplesheet.csv> --outdir <results directory>
 ```
-[!NOTE]
-To run the pipeline create a samplesheet which contain sample name and path to the directory containing read files. Samplesheet can be created manually as shown in the example below:
+> [!NOTE]
+> To run the pipeline create a samplesheet which contain sample name and path to the directory containing read files. Samplesheet can be created manually as shown in the example below:
 ```bash
 sample,R1,R2
 S01,full/path/S1_L002_R1_001.fastq.gz,full/path/S1_L002_R2_001.fastq.gz
