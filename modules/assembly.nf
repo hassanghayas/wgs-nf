@@ -5,7 +5,7 @@ process Assembly {
     container "staphb/spades"
 
     tag "$sample"
-    publishDir "${params.out_dir}/assembly", mode: 'copy'
+    publishDir "${params.outdir}/assembly", mode: 'copy'
 
     input:
     tuple val(sample), path(read1), path(read2)

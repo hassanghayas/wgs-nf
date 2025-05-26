@@ -5,7 +5,7 @@ process Annotation {
     container "staphb/prokka"
 
     tag "$sample"
-    publishDir "${params.out_dir}/annotation", mode: 'copy'
+    publishDir "${params.outdir}/annotation", mode: 'copy'
 
     input:
     path(sample)

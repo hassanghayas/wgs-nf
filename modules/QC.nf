@@ -5,7 +5,7 @@ process Quality_check {
     container 'staphb/fastqc'
 
     tag "$sample"
-    publishDir "${params.out_dir}/QC/fastqc", mode: 'copy'
+    publishDir "${params.outdir}/QC/fastqc", mode: 'copy'
 
     input:
     tuple val(sample), path(read1), path(read2)

@@ -2,7 +2,7 @@
 
 process genomes {
     tag "$sample"
-    publishDir "${params.out_dir}/genomes", mode: 'copy'
+    publishDir "${params.outdir}/genomes", mode: 'copy'
 
     input:
     path(sample)

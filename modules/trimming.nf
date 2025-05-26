@@ -5,7 +5,7 @@ process Trimming {
     container 'staphb/trimmomatic'
 
     tag "$sample"
-    publishDir "${params.out_dir}/trimmed_reads", mode: 'copy'
+    publishDir "${params.outdir}/trimmed_reads", mode: 'copy'
 
     input:
     tuple val(sample), path(read1), path(read2)
