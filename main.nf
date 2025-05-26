@@ -22,6 +22,31 @@ include { MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
 
 workflow {
+    // Show help message
+    if (params.help) {
+        log.info """
+        🧬 wgs-nf Pipeline
+        Author: Hassan Ghayas (github.com/hassanghayas)
+
+        Usage:
+        nextflow run hassanghayas/wgs-nf -profile docker --samplesheet <path> [other options]
+
+        Required:
+        --samplesheet      Path to CSV samplesheet with columns: sample,R1,R2
+
+        Options:
+        --outdir           Output directory for results (default: ./results)
+        --cpus             Number of CPUs per process (default: 8)
+        --memory           Amount of memory per process (e.g. '16 GB')
+        --help             Show this help message
+
+        Example:
+        nextflow run hassanghayas/wgs-nf -profile docker --samplesheet samples.csv --outdir results --cpus 6 --memory '12 GB'
+
+        """
+        exit 0
+    }
+    
     Channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
