@@ -12,7 +12,7 @@ nextflow.enable.dsl=2
 
 
 params.samplesheet = "./samplesheet.csv"
-params.out_dir      = "./results"
+params.outdir      = "./results"
 
 include { Quality_check } from './modules/QC.nf'
 include { Trimming } from './modules/trimming.nf'
@@ -46,7 +46,7 @@ workflow {
         """
         exit 0
     }
-    
+
     Channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
