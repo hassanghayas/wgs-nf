@@ -1,5 +1,5 @@
 #!/usr/bin/env nextflow
-nextflow.enable.dsl=2
+
 /*
 ========================================================================================
     hassanghayas/wgs-nf
@@ -9,7 +9,7 @@ nextflow.enable.dsl=2
 ----------------------------------------------------------------------------------------
 */
 
-
+nextflow.enable.dsl=2
 
 params.samplesheet = "./samplesheet.csv"
 params.outdir      = "./results"
@@ -38,6 +38,7 @@ workflow {
         --outdir           Output directory for results (default: ./results)
         --cpus             Number of CPUs per process (default: 8)
         --memory           Amount of memory per process (e.g. '16 GB')
+        --annotation       Genome annotation (default: false) 
         --help             Show this help message
 
         Example:
@@ -68,7 +69,10 @@ workflow {
     Assembly(Trimming.out)
 
     // Run Annotation
-    Annotation(Assembly.out)
+    
+    if (params.annotation) {
+        Annotation(Assembly.out)
+    }
 
     // copy genomes
     genomes(Assembly.out)
