@@ -8,14 +8,20 @@ process Annotation {
     publishDir "${params.outdir}/annotation", mode: 'copy'
 
     input:
-    path(sample)
+    tuple val(sample), path(contigs)
 
     output:
-    path("${sample}-ann")
+    tuple val(sample), path("${sample}"), emit: all
+    tuple val(sample), path("${sample}/${sample}.txt"), emit: summary
+    tuple val(sample), path("${sample}/${sample}.gff"), emit: gff
+    tuple val(sample), path("${sample}/${sample}.gbk"), emit: gbk
+    tuple val(sample), path("${sample}/${sample}.faa"), emit: proteins
+    tuple val(sample), path("${sample}/${sample}.ffn"), emit: genes
+    tuple val(sample), path("${sample}/${sample}.fna"), emit: genome
 
     script:
     """
-    prokka --outdir '${sample}-ann' --prefix ${sample} '${sample}/contigs.fasta' \\
+    prokka --outdir '${sample}' --prefix ${sample} '${contigs}' \\
     --locustag $sample --mincontiglen 200
     """
 }

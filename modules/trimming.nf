@@ -11,7 +11,7 @@ process Trimming {
     tuple val(sample), path(read1), path(read2)
 
     output:
-    tuple val(sample), path("${sample}.clean_1.fastq.gz"), path("${sample}.clean_2.fastq.gz")
+    tuple val(sample), path("${sample}.clean_1.fastq.gz"), path("${sample}.clean_2.fastq.gz"), emit: trimmed_reads
 
     script:
     """

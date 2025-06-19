@@ -5,13 +5,13 @@ process genomes {
     publishDir "${params.outdir}/genomes", mode: 'copy'
 
     input:
-    path(sample)
+    tuple val(sample), path(contigs)
 
     output:
-    path("${sample}.contigs.fasta")
+    tuple val(sample), path("${sample}.contigs.fasta"), emit: fasta
 
     script:
     """
-    cp '${sample}/contigs.fasta' ${sample}.contigs.fasta
+    cp '${contigs}' ${sample}.contigs.fasta
     """
 }

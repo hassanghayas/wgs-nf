@@ -11,7 +11,9 @@ process Assembly {
     tuple val(sample), path(read1), path(read2)
 
     output:
-    path("${sample}")
+    // grab all output
+    tuple val(sample), path("${sample}"), emit: all
+    tuple val(sample), path("${sample}/contigs.fasta"), emit: contigs
 
     script:
     """

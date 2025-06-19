@@ -20,6 +20,7 @@ include { Assembly } from './modules/assembly.nf'
 include { genomes } from './modules/genomes.nf'
 include { MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
+include { Assembly_filter } from './modules/assembly_filter.nf'
 
 workflow {
     // Show help message
@@ -66,19 +67,26 @@ workflow {
     Trimming(sample_reads)
 
     // Run Assembly
-    Assembly(Trimming.out)
+    Assembly(Trimming.out.trimmed_reads)
 
     // Run Annotation
     
     if (params.annotation) {
-        Annotation(Assembly.out)
+        Annotation(Assembly.out.contigs)
     }
 
     // copy genomes
-    genomes(Assembly.out)
+    genomes(Assembly.out.contigs)
 
     // Run Multiqc
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = ch_multiqc_files.mix(Quality_check.out.zip.collect())
     MultiQC(ch_multiqc_files.collect())
+
+    // Assembly filter
+    Trimming.out.trimmed_reads.join(Assembly.out.contigs)
+    .set { filter_input }
+
+
+    Assembly_filter(filter_input)
 }
