@@ -8,7 +8,7 @@ process Annotation {
     publishDir "${params.outdir}/annotation", mode: 'copy'
 
     input:
-    tuple val(sample), path(contigs)
+    tuple val(sample), path(fasta)
 
     output:
     tuple val(sample), path("${sample}"), emit: all
@@ -21,7 +21,7 @@ process Annotation {
 
     script:
     """
-    prokka --outdir '${sample}' --prefix ${sample} '${contigs}' \\
+    prokka --outdir '${sample}' --prefix ${sample} '${fasta}' \\
     --locustag $sample --mincontiglen 200
     """
 }

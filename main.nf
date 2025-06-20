@@ -17,10 +17,11 @@ params.outdir      = "./results"
 include { Quality_check } from './modules/QC.nf'
 include { Trimming } from './modules/trimming.nf'
 include { Assembly } from './modules/assembly.nf'
-include { genomes } from './modules/genomes.nf'
+include { copy_genomes } from './modules/genomes.nf'
 include { MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
 include { Assembly_filter } from './modules/assembly_filter.nf'
+include { Assembly_Stats } from './modules/assembly_stats.nf'
 
 workflow {
     // Show help message
@@ -69,24 +70,31 @@ workflow {
     // Run Assembly
     Assembly(Trimming.out.trimmed_reads)
 
+    // Run Assembly filter
+    Trimming.out.trimmed_reads.join(Assembly.out.contigs)
+    .set { filter_input }
+    Assembly_filter(filter_input)
+
+    // copy genomes
+    copy_genomes(Assembly.out.contigs)
+
     // Run Annotation
     
     if (params.annotation) {
-        Annotation(Assembly.out.contigs)
+        Annotation(Assembly_filter.out.fasta)
     }
 
-    // copy genomes
-    genomes(Assembly.out.contigs)
 
     // Run Multiqc
     ch_multiqc_files = Channel.empty()
-    ch_multiqc_files = ch_multiqc_files.mix(Quality_check.out.zip.collect())
-    MultiQC(ch_multiqc_files.collect())
+    ch_multiqc_files = Quality_check.out.zip.collect()
+    ch_multiqc_files.view()
+    MultiQC(ch_multiqc_files)
 
-    // Assembly filter
-    Trimming.out.trimmed_reads.join(Assembly.out.contigs)
-    .set { filter_input }
+    // Assembly stats
+    ch_stats_file = channel.empty()
+    ch_stats_file = Assembly_filter.out.tsv.collect()
+    ch_stats_file.view()
+    Assembly_Stats(ch_stats_file)
 
-
-    Assembly_filter(filter_input)
 }

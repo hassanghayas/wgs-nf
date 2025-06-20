@@ -12,8 +12,8 @@ process Assembly_filter {
 
     output:
     tuple val(sample), path("${sample}.filtered.fasta"), emit: fasta
-    tuple val(sample), path("${sample}.assembly_stats.tsv"), emit: tsv
-    tuple val(sample), path("${sample}.contig_stats.txt"), emit: txt
+    path("${sample}.assembly_stats.tsv"), emit: tsv
+    path("${sample}.contig_stats.txt"), emit: txt
 
     script:
     """

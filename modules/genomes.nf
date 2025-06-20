@@ -1,6 +1,6 @@
 #!/usr/bin/env nextflow
 
-process genomes {
+process copy_genomes {
     tag "$sample"
     publishDir "${params.outdir}/genomes", mode: 'copy'
 
