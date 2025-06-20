@@ -88,13 +88,11 @@ workflow {
     // Run Multiqc
     ch_multiqc_files = Channel.empty()
     ch_multiqc_files = Quality_check.out.zip.collect()
-    ch_multiqc_files.view()
     MultiQC(ch_multiqc_files)
 
     // Assembly stats
     ch_stats_file = channel.empty()
     ch_stats_file = Assembly_filter.out.tsv.collect()
-    ch_stats_file.view()
     Assembly_Stats(ch_stats_file)
 
 }
