@@ -2,7 +2,7 @@
 
 process Trimming {
 
-    container 'staphb/trimmomatic'
+    container 'staphb/trimmomatic:0.39'
 
     tag "$sample"
     publishDir "${params.outdir}/trimmed_reads", mode: 'copy'

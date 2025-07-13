@@ -2,7 +2,7 @@
 
 process Quality_check {
 
-    container 'staphb/fastqc'
+    container 'staphb/fastqc:0.12.1'
 
     tag "$sample"
     publishDir "${params.outdir}/QC/fastqc", mode: 'copy'

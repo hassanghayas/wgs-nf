@@ -2,9 +2,9 @@
 
 process MultiQC {
 
-    container 'staphb/multiqc'
+    container 'staphb/multiqc:1.28'
     tag "multiqc"
-    publishDir "${params.outdir}/QC", mode: 'copy'
+    publishDir "${params.outdir}/summary", mode: 'copy'
 
     input:
     path input_files

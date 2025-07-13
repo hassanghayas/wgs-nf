@@ -2,7 +2,7 @@
 
 process Assembly {
 
-    container "staphb/spades"
+    container "staphb/spades:4.2.0"
 
     tag "$sample"
     publishDir "${params.outdir}/assembly", mode: 'copy'

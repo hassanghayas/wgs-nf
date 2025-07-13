@@ -2,7 +2,7 @@
 
 process Annotation {
 
-    container "staphb/prokka"
+    container "staphb/prokka:1.14.6"
 
     tag "$sample"
     publishDir "${params.outdir}/annotation", mode: 'copy'
