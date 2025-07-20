@@ -19,7 +19,7 @@ nextflow pull hassanghayas/wgs-nf
 ```
 or
 ```bash
-nextflow run hassanghayas/wgs-nf -profile docker,test
+nextflow run hassanghayas/wgs-nf -profile <singularity/docker>,test
 ```
 
 ## Usage
