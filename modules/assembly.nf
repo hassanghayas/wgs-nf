@@ -18,6 +18,6 @@ process Assembly {
     script:
     """
     mkdir -p ${sample}
-    spades.py -t 6 -o ${sample} -1 $read1 -2 $read2 --cov-cutoff auto
+    spades.py -t ${task.cpus} -o ${sample} -1 $read1 -2 $read2 --cov-cutoff auto
     """
 }

@@ -17,6 +17,6 @@ process Assembly_filter {
 
     script:
     """
-    assembly_qc_filter.pl -c $contigs -1 $read1 -2 $read2 -o ${sample}
+    assembly_qc_filter.pl -c $contigs -1 $read1 -2 $read2 -o ${sample} -t ${task.cpus}
     """
 }

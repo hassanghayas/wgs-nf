@@ -15,7 +15,7 @@ process Trimming {
 
     script:
     """
-    trimmomatic PE -threads 6 $read1 $read2 \\
+    trimmomatic PE -threads ${task.cpus} $read1 $read2 \\
         ${sample}.clean_1.fastq.gz /dev/null \\
         ${sample}.clean_2.fastq.gz /dev/null \\
         ILLUMINACLIP:/Trimmomatic-0.39/adapters/NexteraPE-PE.fa:2:30:10 \\

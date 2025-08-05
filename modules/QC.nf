@@ -2,6 +2,7 @@
 
 process Quality_check {
 
+    cpus 6
     container 'staphb/fastqc:0.12.1'
 
     tag "$sample"
@@ -16,6 +17,6 @@ process Quality_check {
 
     script:
     """
-    fastqc -t 4 $read1 $read2
+    fastqc -t ${task.cpus} $read1 $read2
     """
 }
