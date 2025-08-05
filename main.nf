@@ -50,6 +50,30 @@ workflow {
         exit 0
     }
 
+    log.info "Core Nextflow options"
+    log.info "  revision              : ${workflow.revision ?: 'not specified'}"
+    log.info "  runName               : ${workflow.runName}"
+    log.info "  containerEngine       : ${workflow.containerEngine ?: 'none'}"
+    log.info "  launchDir             : ${workflow.launchDir}"
+    log.info "  workDir               : ${workflow.workDir}"
+    log.info "  projectDir            : ${workflow.projectDir}"
+    log.info "  userName              : ${workflow.userName}"
+    log.info "  profile               : ${workflow.profile}"
+    log.info "  configFiles           : ${workflow.configFiles.join(', ')}"
+
+    log.info " "
+    log.info "Pipeline Input/output"
+    log.info "  input                 : ${params.samplesheet}"
+    log.info "  outdir                : ${params.outdir}"
+
+    log.info " "
+    log.info "Resources"
+    log.info "  cpus              : ${params.cpus ?: 'default'}"
+    log.info "  memory            : ${params.memory ?: 'default'}"
+
+    log.info " "
+    log.info "Start of pipeline execution: ${workflow.start}"
+
     Channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
