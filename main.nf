@@ -22,6 +22,7 @@ include { MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
 include { Assembly_filter } from './modules/assembly_filter.nf'
 include { Assembly_Stats } from './modules/assembly_stats.nf'
+include { MLST } from './modules/mlst.nf'
 
 workflow {
     // Show help message
@@ -40,7 +41,8 @@ workflow {
         --outdir           Output directory for results (default: ./results)
         --cpus             Number of CPUs per process (default: 8)
         --memory           Amount of memory per process (e.g. '16 GB')
-        --annotation       Genome annotation (default: false) 
+        --annotation       Genome annotation (default: false)
+        --mlst             multi locus sequence typing (default: false)
         --help             Show this help message
 
         Example:
@@ -101,6 +103,11 @@ workflow {
 
     // copy genomes
     copy_genomes(Assembly.out.contigs)
+
+    // Run mlst
+    if (params.mlst) {
+        MLST(Assembly_filter.out.fasta)
+    }
 
     // Run Annotation
     
