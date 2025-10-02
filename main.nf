@@ -21,7 +21,7 @@ include { copy_genomes } from './modules/genomes.nf'
 include { MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
 include { Assembly_filter } from './modules/assembly_filter.nf'
-include { Assembly_Stats } from './modules/assembly_stats.nf'
+include { Summary } from './modules/summary.nf'
 include { MLST } from './modules/mlst.nf'
 
 workflow {
@@ -122,8 +122,15 @@ workflow {
     MultiQC(ch_multiqc_files)
 
     // Assembly stats
-    ch_stats_file = channel.empty()
-    ch_stats_file = Assembly_filter.out.tsv.collect()
-    Assembly_Stats(ch_stats_file)
+    // ch_stats_file = channel.empty()
+    // ch_stats_file = Assembly_filter.out.tsv.collect()
+    // Assembly_Stats(ch_stats_file)
+
+    // summary
+    ch_summary = channel.empty()
+    ch_assembly = Assembly_filter.out.tsv.collect()
+    ch_mlst = MLST.out.tsv.collect()
+    ch_summary = ch_mlst.mix(ch_assembly).collect()
+    Summary(ch_summary)
 
 }
