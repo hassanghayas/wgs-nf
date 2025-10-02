@@ -8,6 +8,7 @@ Main steps for this pipeline are:
 2. Adapter and low quality bases Trimming [(Trimmomatic)](http://www.usadellab.org/cms/index.php?page=trimmomatic).
 3. Draft genome assembly using [SPAdes](https://ablab.github.io/spades/) de-novo genome assembler.
 4. Bacterial draft genome annotation with [prokka](https://github.com/tseemann/prokka).
+5. Mulit locus sequence typing (MLST) using [mlst](https://github.com/tseemann/mlst).
 
 
 ## 💻 Installation
@@ -53,6 +54,7 @@ results/
 ├── annotation (optional)
 ├── assembly
 ├── genomes
+├── mlst
 ├── QC
 ├── summary
 └── trimmed_reads
@@ -90,6 +92,13 @@ Output files:
 - `genomes/<sample>.filtered.fasta`: filtered assembly in fasta format
 - `summary/assembly.stats.tsv`: assembly statistics of all samples in project
 
+#### Multilocus sequence typing (MLST)
+MLST is performed using [mlst](https://github.com/tseemann/mlst) tool when parameter `--mlst` provided while running the pipeline
+
+Output files:
+- `mlst/<sample>.mlst.tsv`: ST for each sample
+- `summary/mlst.tsv` : ST of all samples
+
 #### Genome annotation
 [prokka](https://github.com/tseemann/prokka) performs genome annotation when parameter `--annotation` provided while running the pipeline
 
@@ -101,4 +110,3 @@ Output files:
 
 ## Future implementation
 1. Antimicrobial resistance gene analysis
-2. MLST
