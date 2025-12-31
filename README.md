@@ -9,6 +9,7 @@ Main steps for this pipeline are:
 3. Draft genome assembly using [SPAdes](https://ablab.github.io/spades/) de-novo genome assembler.
 4. Bacterial draft genome annotation with [prokka](https://github.com/tseemann/prokka).
 5. Mulit locus sequence typing (MLST) using [mlst](https://github.com/tseemann/mlst).
+6. Identification if AMR genes using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr).
 
 
 ## 💻 Installation
@@ -51,10 +52,11 @@ The pipeline will create result directory specified by `--outdir` parameter. Res
 
 ```bash
 results/
+├── AMR (optional)
 ├── annotation (optional)
 ├── assembly
 ├── genomes
-├── mlst
+├── mlst (optional)
 ├── QC
 ├── summary
 └── trimmed_reads
@@ -92,6 +94,13 @@ Output files:
 - `genomes/<sample>.filtered.fasta`: filtered assembly in fasta format
 - `summary/assembly.stats.tsv`: assembly statistics of all samples in project
 
+#### Antimicrobial Resistance Gene Analysis (NCBI-AMRFinderPlus)
+AMR genes identification is performed using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr) tool when parameter `--amrfinder` provided while running the pipeline
+
+Output files:
+- `AMR/NCBI_amrfinder/<sample>.amrfinder.tsv`: AMR genes for each sample
+
+
 #### Multilocus sequence typing (MLST)
 MLST is performed using [mlst](https://github.com/tseemann/mlst) tool when parameter `--mlst` provided while running the pipeline
 
@@ -109,4 +118,4 @@ Output files:
     - `<sample>.gff`: annotation in gff format
 
 ## Future implementation
-1. Antimicrobial resistance gene analysis
+1. Antimicrobial resistance gene analysis (Heatmap for resistance genes)
