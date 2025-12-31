@@ -23,6 +23,7 @@ include { Annotation } from './modules/annotation.nf'
 include { Assembly_filter } from './modules/assembly_filter.nf'
 include { Summary } from './modules/summary.nf'
 include { MLST } from './modules/mlst.nf'
+include { NCBI_AMRfinder } from './modules/amrfinder.nf'
 
 workflow {
     // Show help message
@@ -43,6 +44,7 @@ workflow {
         --memory           Amount of memory per process (e.g. '16 GB')
         --annotation       Genome annotation (default: false)
         --mlst             multi locus sequence typing (default: false)
+        --amrfinder        NCBI_amrfinderplus: Identify AMR genes (default: false)
         --help             Show this help message
 
         Example:
@@ -52,8 +54,8 @@ workflow {
         exit 0
     }
 
-    log.info "Core Nextflow options"
-    log.info "  revision              : ${workflow.revision ?: 'not specified'}"
+    log.info "\033[1;34mCore Nextflow options\033[0m"
+    log.info "\033[0;32m  revision              : ${workflow.revision ?: 'not specified'}"
     log.info "  runName               : ${workflow.runName}"
     log.info "  containerEngine       : ${workflow.containerEngine ?: 'none'}"
     log.info "  launchDir             : ${workflow.launchDir}"
@@ -61,20 +63,20 @@ workflow {
     log.info "  projectDir            : ${workflow.projectDir}"
     log.info "  userName              : ${workflow.userName}"
     log.info "  profile               : ${workflow.profile}"
-    log.info "  configFiles           : ${workflow.configFiles.join(', ')}"
+    log.info "  configFiles           : ${workflow.configFiles.join(', ')}\033[0m"
 
     log.info " "
-    log.info "Pipeline Input/output"
-    log.info "  input                 : ${params.samplesheet}"
-    log.info "  outdir                : ${params.outdir}"
+    log.info "\033[1;34mPipeline Input/output\033[0m"
+    log.info "\033[0;32m  input                 : ${params.samplesheet}"
+    log.info "  outdir                : ${params.outdir}\033[0m"
 
     log.info " "
-    log.info "Resources"
-    log.info "  cpus              : ${params.cpus ?: 'default'}"
-    log.info "  memory            : ${params.memory ?: 'default'}"
+    log.info "\033[1;34mResources"
+    log.info "\033[0;32m  cpus              : ${params.cpus ?: 'default'}"
+    log.info "  memory            : ${params.memory ?: 'default'}\033[0m"
 
     log.info " "
-    log.info "Start of pipeline execution: ${workflow.start}"
+    log.info "\033[1;34mStart of pipeline execution: ${workflow.start}\033[0m"
 
     Channel
     .fromPath(params.samplesheet)
@@ -107,6 +109,11 @@ workflow {
     // Run mlst
     if (params.mlst) {
         MLST(Assembly_filter.out.fasta)
+    }
+
+    // Run ncbi_amrfinder
+    if (params.amrfinder) {
+        NCBI_AMRfinder(Assembly_filter.out.fasta)
     }
 
     // Run Annotation
