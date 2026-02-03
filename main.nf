@@ -138,8 +138,11 @@ workflow {
     // summary
     ch_summary = channel.empty()
     ch_assembly = Assembly_filter.out.tsv.collect()
-    ch_mlst = MLST.out.tsv.collect()
-    ch_summary = ch_mlst.mix(ch_assembly).collect()
+    ch_mlst = params.mlst \
+        ? MLST.out.tsv.collect() \
+        : Channel.empty()
+    ch_summary = ch_assembly.mix(ch_mlst).collect()
+    // ch_summary.view()
     Summary(ch_summary)
 
 }
