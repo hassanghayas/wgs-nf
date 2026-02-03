@@ -24,6 +24,7 @@ include { Assembly_filter } from './modules/assembly_filter.nf'
 include { Summary } from './modules/summary.nf'
 include { MLST } from './modules/mlst.nf'
 include { NCBI_AMRfinder } from './modules/amrfinder.nf'
+include { ResFinder } from './modules/resfinder.nf'
 
 workflow {
     // Show help message
@@ -44,7 +45,7 @@ workflow {
         --memory           Amount of memory per process (e.g. '16 GB')
         --annotation       Genome annotation (default: false)
         --mlst             multi locus sequence typing (default: false)
-        --amrfinder        NCBI_amrfinderplus: Identify AMR genes (default: false)
+        --amrfinder        AMRFinderPlus and ResFinder: Identify AMR genes (default: false)
         --help             Show this help message
 
         Example:
@@ -114,6 +115,7 @@ workflow {
     // Run ncbi_amrfinder
     if (params.amrfinder) {
         NCBI_AMRfinder(Assembly_filter.out.fasta)
+        ResFinder(Assembly_filter.out.fasta)
     }
 
     // Run Annotation
