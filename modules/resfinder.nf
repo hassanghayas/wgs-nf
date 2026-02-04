@@ -6,19 +6,19 @@ process ResFinder {
 
     tag "$sample"
     publishDir "${params.outdir}/AMR/resfinder", mode: 'copy'
-    publishDir "${params.outdir}/AMR/resfinder", mode: 'copy', pattern: '*.results.tsv'
+    publishDir "${params.outdir}/AMR/resfinder", mode: 'copy', pattern: '*.resfinder.tsv'
 
     input:
     tuple val(sample), path(fasta)
 
     output:
     tuple val(sample), path("${sample}"), emit: all
-    tuple val(sample), path("${sample}.results.tsv"), emit: arg
-    tuple val(sample), path("${sample}.json"), emit: json
+    path("${sample}.resfinder.tsv"), emit: arg
+
 
     script:
     """
-    python3 -m resfinder -ifa ${fasta} -o ${sample} --acquired -j ${sample}.json
-    cp '${sample}/ResFinder_results_tab.txt' './${sample}.results.tsv'
+    python3 -m resfinder -ifa ${fasta} -o ${sample} --acquired
+    awk 'BEGIN{OFS="\\t"; name="${sample}"} NR==1{print "Sample",\$0} NR>1{print name,\$0}' '${sample}/ResFinder_results_tab.txt' >'./${sample}.resfinder.tsv'
     """
 }
