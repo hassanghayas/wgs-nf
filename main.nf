@@ -25,6 +25,7 @@ include { Summary } from './modules/summary.nf'
 include { MLST } from './modules/mlst.nf'
 include { NCBI_AMRfinder } from './modules/amrfinder.nf'
 include { ResFinder } from './modules/resfinder.nf'
+include { Collate_AMR } from './modules/amr_collate.nf'
 
 workflow {
     // Show help message
@@ -116,6 +117,10 @@ workflow {
     if (params.amrfinder) {
         NCBI_AMRfinder(Assembly_filter.out.fasta)
         ResFinder(Assembly_filter.out.fasta)
+        ch_amrfinder = NCBI_AMRfinder.out.tsv.collect()
+        ch_resfinder = ResFinder.out.arg.collect()
+        Collate_AMR(ch_amrfinder,ch_resfinder)
+
     }
 
     // Run Annotation
