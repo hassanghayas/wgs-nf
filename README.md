@@ -9,7 +9,7 @@ Main steps for this pipeline are:
 3. Draft genome assembly using [SPAdes](https://ablab.github.io/spades/) de-novo genome assembler.
 4. Bacterial draft genome annotation with [prokka](https://github.com/tseemann/prokka).
 5. Mulit locus sequence typing (MLST) using [mlst](https://github.com/tseemann/mlst).
-6. Identification if AMR genes using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr).
+6. Identification of AMR genes using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr) and [Resfinder](https://bitbucket.org/genomicepidemiology/resfinder/src/master/).
 
 
 ## 💻 Installation
@@ -35,7 +35,7 @@ S02,full/path/S2_L002_R1_001.fastq.gz,full/path/S2_L002_R2_001.fastq.gz
 ```
 Script is provided for automated creation of samplesheet from a directory of fastq files.
 ```bash
-wgs-nf/bin/create_samplesheet.sh <fastq files directory> > samplesheet.csv
+/home/$USER/.nextflow/assets/hassanghayas/wgs-nf/bin/create_samplesheet.sh <fastq files directory> > samplesheet.csv
 ```
 
 ### Running the pipeline
@@ -53,6 +53,8 @@ The pipeline will create result directory specified by `--outdir` parameter. Res
 ```bash
 results/
 ├── AMR (optional)
+│    ├─ NCBI_amrfinder
+│    └─ resfinder
 ├── annotation (optional)
 ├── assembly
 ├── genomes
@@ -95,10 +97,14 @@ Output files:
 - `summary/assembly.stats.tsv`: assembly statistics of all samples in project
 
 #### Antimicrobial Resistance Gene Analysis (NCBI-AMRFinderPlus)
-AMR genes identification is performed using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr) tool when parameter `--amrfinder` provided while running the pipeline
+AMR genes identification is performed using [NCBI-AMRFinderPlus](https://github.com/ncbi/amr) and [Resfinder](https://bitbucket.org/genomicepidemiology/resfinder/src/master/) tools when parameter `--amrfinder` provided while running the pipeline
 
 Output files:
 - `AMR/NCBI_amrfinder/<sample>.amrfinder.tsv`: AMR genes for each sample
+- `AMR/resfinder/<sample>.resfinder.tsv`: AMR genes for each sample
+- `summary/`
+    - `amrfinder.combined.tsv`: combined list of AMRFinderPlus genes for all samples
+    - `resfinder.combined.tsv`: combined list of ResFinder genes for all samples
 
 
 #### Multilocus sequence typing (MLST)
