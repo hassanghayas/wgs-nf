@@ -80,7 +80,7 @@ workflow {
     log.info " "
     log.info "\033[1;34mStart of pipeline execution: ${workflow.start}\033[0m"
 
-    Channel
+    channel
     .fromPath(params.samplesheet)
     .splitCsv(header: true, sep: ',')
     .map { row -> 
@@ -131,7 +131,7 @@ workflow {
 
 
     // Run Multiqc
-    ch_multiqc_files = Channel.empty()
+    ch_multiqc_files = channel.empty()
     ch_multiqc_files = Quality_check.out.zip.collect()
     MultiQC(ch_multiqc_files)
 
@@ -145,7 +145,7 @@ workflow {
     ch_assembly = Assembly_filter.out.tsv.collect()
     ch_mlst = params.mlst \
         ? MLST.out.tsv.collect() \
-        : Channel.empty()
+        : channel.empty()
     ch_summary = ch_assembly.mix(ch_mlst).collect()
     // ch_summary.view()
     Summary(ch_summary)

@@ -11,7 +11,7 @@ process Summary {
 
     output:
     path("assembly.stats.tsv")
-    path("mlst.tsv") optional true
+    path("mlst.tsv", optional: true)
 
     script:
     """
