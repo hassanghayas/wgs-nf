@@ -2,7 +2,6 @@
 
 process Quality_check {
 
-    cpus 6
     container 'staphb/fastqc:0.12.1'
 
     tag "$sample"
