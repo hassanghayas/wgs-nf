@@ -11,8 +11,9 @@
 
 nextflow.enable.dsl=2
 
-params.samplesheet = "./samplesheet.csv"
-params.outdir      = "./results"
+// No defaults
+params.samplesheet = null
+params.outdir      = "$launchDir/results"
 
 include { Quality_check } from './modules/QC.nf'
 include { Trimming } from './modules/trimming.nf'
@@ -31,7 +32,7 @@ workflow {
     // Show help message
     if (params.help) {
         log.info """
-        🧬 wgs-nf Pipeline
+        🧬 wgs-nf Pipeline v1.2.0
         Author: Hassan Ghayas (github.com/hassanghayas)
 
         Usage:
@@ -41,7 +42,7 @@ workflow {
         --samplesheet      Path to CSV samplesheet with columns: sample,R1,R2
 
         Options:
-        --outdir           Output directory for results (default: ./results)
+        --outdir           Output directory for results (default: results)
         --cpus             Number of CPUs per process (default: 8)
         --memory           Amount of memory per process (e.g. '16 GB')
         --annotation       Genome annotation (default: false)
@@ -54,6 +55,16 @@ workflow {
 
         """
         exit 0
+    }
+
+    // Validate required parameters
+    if ( !params.samplesheet ) {
+    error "Missing required parameter: --samplesheet"
+    }
+
+    // Optional: validate file exists
+    if ( !file(params.samplesheet).exists() ) {
+    error "Samplesheet ${params.samplesheet} not found"
     }
 
     log.info "\033[1;34mCore Nextflow options\033[0m"
