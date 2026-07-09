@@ -11,9 +11,9 @@
 
 nextflow.enable.dsl=2
 
-// No defaults
-params.samplesheet = null
-params.outdir      = "$launchDir/results"
+// defaults
+// params.samplesheet = null
+// params.outdir      = "$launchDir/results"
 
 include { Quality_check } from './modules/QC.nf'
 include { Trimming } from './modules/trimming.nf'
