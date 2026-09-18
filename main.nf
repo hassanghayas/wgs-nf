@@ -15,11 +15,13 @@ nextflow.enable.dsl=2
 // params.samplesheet = null
 // params.outdir      = "$launchDir/results"
 
-include { Quality_check } from './modules/QC.nf'
+include { Raw_reads_QC } from './modules/QC.nf'
 include { Trimming } from './modules/trimming.nf'
+include { Trimmed_reads_QC } from './modules/trim_QC.nf'
 include { Assembly } from './modules/assembly.nf'
 include { copy_genomes } from './modules/genomes.nf'
-include { MultiQC } from './modules/multiqc.nf'
+include { MultiQC as Raw_MultiQC }     from './modules/multiqc.nf'
+include { MultiQC as Trimmed_MultiQC } from './modules/multiqc.nf'
 include { Annotation } from './modules/annotation.nf'
 include { Assembly_filter } from './modules/assembly_filter.nf'
 include { Summary } from './modules/summary.nf'
@@ -102,11 +104,14 @@ workflow {
     }
     .set { sample_reads }
 
-    // Run QC
-    Quality_check(sample_reads)
+    // Run raw reads QC
+    Raw_reads_QC(sample_reads)
 
     // Run Trimming
     Trimming(sample_reads)
+
+    // Run trimmed reads QC
+    Trimmed_reads_QC(Trimming.out.trimmed_reads)
 
     // Run Assembly
     Assembly(Trimming.out.trimmed_reads)
@@ -142,9 +147,10 @@ workflow {
 
 
     // Run Multiqc
-    ch_multiqc_files = channel.empty()
-    ch_multiqc_files = Quality_check.out.zip.collect()
-    MultiQC(ch_multiqc_files)
+    // ch_raw_multiqc_files = channel.empty()
+    // ch_raw_multiqc_files = Raw_reads_QC.out.zip.collect()
+    Raw_MultiQC(Raw_reads_QC.out.zip.collect(), "raw_reads")
+    Trimmed_MultiQC(Trimmed_reads_QC.out.zip.collect(), "trimmed_reads")
 
     // Assembly stats
     // ch_stats_file = channel.empty()

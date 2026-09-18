@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 
-process Quality_check {
+process Raw_reads_QC {
 
     container 'staphb/fastqc:0.12.1'
 
     tag "$sample"
-    publishDir "${params.outdir}/QC/fastqc/${sample}", mode: 'copy'
+    publishDir {"${params.outdir}/QC/Raw_reads/${sample}"}, mode: 'copy'
 
     input:
     tuple val(sample), path(read1), path(read2)
