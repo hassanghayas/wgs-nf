@@ -29,6 +29,7 @@ include { MLST } from './modules/mlst.nf'
 include { NCBI_AMRfinder } from './modules/amrfinder.nf'
 include { ResFinder } from './modules/resfinder.nf'
 include { Collate_AMR } from './modules/amr_collate.nf'
+include { rRNA_Annotation } from './modules/rnammer.nf'
 
 workflow {
     // Show help message
@@ -127,6 +128,11 @@ workflow {
     // Run mlst
     if (params.mlst) {
         MLST(Assembly_filter.out.fasta)
+    }
+
+    // Run rrnammer
+    if (params.rrna) {
+        rRNA_Annotation(Assembly_filter.out.fasta)
     }
 
     // Run ncbi_amrfinder
