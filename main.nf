@@ -30,6 +30,7 @@ include { NCBI_AMRfinder } from './modules/amrfinder.nf'
 include { ResFinder } from './modules/resfinder.nf'
 include { Collate_AMR } from './modules/amr_collate.nf'
 include { rRNA_Annotation } from './modules/rnammer.nf'
+include { rRNA_Taxonomy } from './modules/16s_taxonomy.nf'
 
 workflow {
     // Show help message
@@ -135,6 +136,17 @@ workflow {
         rRNA_Annotation(Assembly_filter.out.fasta)
     }
 
+    // Run 16S taxonomy
+    if (params.taxonomy16S) {
+        if (!params.rrna) {
+            error "ERROR: --taxonomy16S requires --rrna to be enabled. Please set --rrna true."
+        }
+        if (!params.db) {
+            error "ERROR: --taxonomy16S requires --db to be provided. Please provide a valid path to the BLAST database."
+        }
+        rRNA_Taxonomy(rRNA_Annotation.out.fasta)
+    }
+
     // Run ncbi_amrfinder
     if (params.amrfinder) {
         NCBI_AMRfinder(Assembly_filter.out.fasta)
@@ -169,7 +181,10 @@ workflow {
     ch_mlst = params.mlst \
         ? MLST.out.tsv.collect() \
         : channel.empty()
-    ch_summary = ch_assembly.mix(ch_mlst).collect()
+    ch_16s_taxonomy = params.taxonomy16S \
+        ? rRNA_Taxonomy.out.tsv.collect() \
+        : channel.empty()
+    ch_summary = ch_assembly.mix(ch_mlst).mix(ch_16s_taxonomy).collect()
     // ch_summary.view()
     Summary(ch_summary)
 
