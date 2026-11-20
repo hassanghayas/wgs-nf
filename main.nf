@@ -40,7 +40,7 @@ workflow {
         Author: Hassan Ghayas (github.com/hassanghayas)
 
         Usage:
-        nextflow run hassanghayas/wgs-nf -profile docker --samplesheet <path> [other options]
+        nextflow run hassanghayas/wgs-nf -profile <docker/singularity> --samplesheet <path> [other options]
 
         Required:
         --samplesheet      Path to CSV samplesheet with columns: sample,R1,R2
@@ -48,14 +48,17 @@ workflow {
         Options:
         --outdir           Output directory for results (default: results)
         --cpus             Number of CPUs per process (default: 8)
-        --memory           Amount of memory per process (e.g. '16 GB')
+        --memory           Amount of memory per process (e.g. '16.GB')
         --annotation       Genome annotation (default: false)
         --mlst             multi locus sequence typing (default: false)
         --amrfinder        AMRFinderPlus and ResFinder: Identify AMR genes (default: false)
+        --rrna             rRNA annotation using RNAmmer (default: false)
+        --taxonomy16S      16S rRNA taxonomy using BLAST (requires --rrna and --db) (default: false)
+        --db               Path to BLAST database folder for 16S rRNA taxonomy (required if --taxonomy16S is true)
         --help             Show this help message
 
         Example:
-        nextflow run hassanghayas/wgs-nf -profile docker --samplesheet samples.csv --outdir results --cpus 6 --memory '12 GB'
+        nextflow run hassanghayas/wgs-nf -profile docker --samplesheet samples.csv --outdir results --cpus 6 --memory '12.GB'
 
         """
         exit 0
