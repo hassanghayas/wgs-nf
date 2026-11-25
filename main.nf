@@ -74,6 +74,24 @@ workflow {
     error "Samplesheet ${params.samplesheet} not found"
     }
 
+    if (params.taxonomy16S) {
+        if (!params.rrna) {
+        error "ERROR: --taxonomy16S requires --rrna to be enabled. Please set --rrna true."
+        }
+        if (!params.db) {
+        error "ERROR: --taxonomy16S requires --db to be provided. Please provide a valid path to the BLAST database."
+        }
+        if (!file(params.db).exists()) {
+        error "ERROR: BLAST database directory ${params.db} does not exist"
+        }
+        if (!file("${params.db}/16S_ribosomal_RNA.nin").exists() || !file("${params.db}/16S_ribosomal_RNA.nsq").exists()) {
+        error "ERROR: BLAST nucleotide database index files are missing in ${params.db}"
+        }
+        if (!file("${params.db}/taxdb.btd").exists() || !file("${params.db}/taxdb.bti").exists()) {
+        error "ERROR: NCBI taxonomy database files taxdb.btd/taxdb.bti are missing. Please check database directory ${params.db}"
+        }
+    }
+
     log.info "\033[1;34mCore Nextflow options\033[0m"
     log.info "\033[0;32m  revision              : ${workflow.revision ?: 'not specified'}"
     log.info "  runName               : ${workflow.runName}"
@@ -141,12 +159,6 @@ workflow {
 
     // Run 16S taxonomy
     if (params.taxonomy16S) {
-        if (!params.rrna) {
-            error "ERROR: --taxonomy16S requires --rrna to be enabled. Please set --rrna true."
-        }
-        if (!params.db) {
-            error "ERROR: --taxonomy16S requires --db to be provided. Please provide a valid path to the BLAST database."
-        }
         rRNA_Taxonomy(rRNA_Annotation.out.fasta)
     }
 
